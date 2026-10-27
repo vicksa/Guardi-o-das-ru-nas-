@@ -1,0 +1,1484 @@
+@font-face {
+  font-family: Ruins Mono;
+  src: url("/fonts/mono.ttf") format("truetype");
+  font-display: swap;
+}
+:root {
+  color: #f0ebd9;
+  background: #102a32;
+  font-family: Arial, Helvetica, sans-serif;
+  font-synthesis: none;
+  --cream: #f0ebd9;
+  --muted: #a6bbb5;
+  --gold: #efc184;
+  --jade: #9ad8c0;
+  --mono: "Ruins Mono", monospace;
+  --line: #d7e1cb36;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  border: 0;
+  color: inherit;
+  background: none;
+  min-height: 42px;
+}
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 5px;
+}
+button:disabled {
+  opacity: 0.45;
+  cursor: wait;
+}
+button:hover {
+  color: var(--gold);
+}
+button:active {
+  transform: translateY(1px);
+}
+.hidden {
+  display: none !important;
+}
+#experience {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background: #173842;
+}
+#world {
+  position: absolute;
+  inset: 0;
+}
+#world canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, #071e28e8 0%, #0b28347a 35%, transparent 67%),
+    linear-gradient(0deg, #071c27a8, transparent 30%);
+  transition: opacity 0.5s;
+}
+#experience:has(#title.hidden) .vignette {
+  background: linear-gradient(
+    0deg,
+    #071c2780,
+    transparent 22%,
+    transparent 80%,
+    #071c2750
+  );
+}
+.topbar {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 42px;
+  border-bottom: 1px solid #d7e1cb18;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--cream);
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: 2px;
+  line-height: 1.6;
+}
+.brand svg {
+  height: 40px;
+  width: 40px;
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.1;
+}
+.brand span span {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: #c4d2c4;
+}
+.topbar nav {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+.quiet {
+  font-size: 9px;
+  letter-spacing: 1.4px;
+}
+.icon-button {
+  min-width: 40px;
+  font-size: 10px;
+}
+.icon-button span {
+  color: var(--gold);
+  font-size: 8px;
+  margin-left: 6px;
+}
+#fullscreen {
+  font-size: 25px;
+  font-family: Arial;
+  font-weight: 300;
+}
+.title-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+.title-copy {
+  position: absolute;
+  left: 6.4%;
+  top: 48%;
+  transform: translateY(-50%);
+  max-width: 590px;
+  width: 47%;
+  pointer-events: auto;
+}
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 9px var(--mono);
+  letter-spacing: 2px;
+  color: var(--gold);
+}
+.eyebrow i {
+  width: 23px;
+  height: 1px;
+  background: var(--gold);
+}
+h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(64px, 7.6vw, 122px);
+  font-weight: 400;
+  line-height: 0.96;
+  letter-spacing: -5px;
+  margin: 26px 0 30px;
+}
+h1 em {
+  font-weight: 400;
+  color: #d6e4ce;
+  white-space: nowrap;
+}
+.lead {
+  font-family: Georgia, serif;
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 1.4;
+  margin: 0 0 18px;
+}
+.story {
+  max-width: 330px;
+  color: #b6c9c1;
+  font-size: 12px;
+  line-height: 1.8;
+  letter-spacing: 0.1px;
+  margin: 0 0 27px;
+}
+.start-actions {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 7px;
+}
+.primary {
+  background: var(--gold);
+  color: #1d3436;
+  min-height: 53px;
+  padding: 17px 24px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  border: 1px solid var(--gold);
+  box-shadow: 0 4px 20px #0a222b44;
+  transition: background 0.15s;
+}
+.primary:hover {
+  background: #f8d4a2;
+  color: #142d32;
+}
+.primary span {
+  font-family: Arial, sans-serif;
+  font-size: 19px;
+  margin-left: 28px;
+}
+.text-button {
+  padding: 9px 0;
+  min-height: 40px;
+  font-size: 8px;
+  color: #d4dfd6;
+  letter-spacing: 1px;
+}
+.text-button span {
+  margin-left: 17px;
+  color: var(--gold);
+}
+.privacy {
+  font: 8px var(--mono);
+  color: #94afa7;
+  letter-spacing: 0.1px;
+  margin-top: 15px;
+}
+.lock {
+  color: var(--gold);
+  font-size: 14px;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+.world-caption {
+  position: absolute;
+  right: 5%;
+  bottom: 20%;
+  text-align: right;
+  text-shadow: 0 2px 20px #102e35;
+}
+.world-caption > span {
+  font: 8px var(--mono);
+  color: #d9dec8;
+  letter-spacing: 2px;
+}
+.world-caption b {
+  display: block;
+  font:
+    italic 28px/1.3 Georgia,
+    serif;
+  font-weight: 400;
+  margin-top: 18px;
+}
+.caption-line {
+  width: 50px;
+  height: 1px;
+  background: var(--gold);
+  margin: 18px 0 14px auto;
+}
+.world-caption small {
+  font: 7px var(--mono);
+  letter-spacing: 2px;
+  color: #e8ddbe;
+}
+.title-footer {
+  position: absolute;
+  left: 6.4%;
+  right: 5%;
+  bottom: 29px;
+  display: flex;
+  justify-content: space-between;
+  font: 8px var(--mono);
+  letter-spacing: 1.3px;
+  color: #bdc9b9;
+}
+.title-footer i {
+  font-style: normal;
+  color: var(--gold);
+  margin: 0 15px;
+}
+.quality {
+  position: absolute;
+  bottom: 12px;
+  right: 15px;
+  min-height: 24px;
+  font: 7px var(--mono);
+  color: #c2d2c0;
+  letter-spacing: 1px;
+  z-index: 22;
+  opacity: 0.8;
+}
+.quality[aria-pressed="true"] {
+  color: var(--gold);
+}
+.hud {
+  position: absolute;
+  left: 42px;
+  right: 42px;
+  top: 116px;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: start;
+  pointer-events: none;
+  text-shadow: 0 2px 10px #102c33;
+}
+.hud button {
+  pointer-events: auto;
+  justify-self: end;
+  padding: 0;
+  min-height: 22px;
+}
+.micro {
+  font: 7px var(--mono);
+  letter-spacing: 2px;
+  color: #e5ebd5;
+}
+.vital > div {
+  display: flex;
+  gap: 7px;
+  margin-top: 12px;
+}
+.vital i {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border: 1px solid #d8be87;
+  transform: rotate(45deg);
+}
+.vital i.filled {
+  background: var(--gold);
+  box-shadow: 0 0 12px #edbd7840;
+}
+.mission {
+  text-align: center;
+}
+.mission p {
+  font:
+    19px Georgia,
+    serif;
+  margin: 9px 0 10px;
+  color: #fff3d9;
+}
+.mission > span:last-child {
+  font: 7px var(--mono);
+  letter-spacing: 1.7px;
+  color: #d4e2ca;
+}
+.hud kbd {
+  background: #12343b80;
+  font-size: 7px;
+  margin-left: 6px;
+  border: 1px solid #bdcfc54d;
+  padding: 3px 5px;
+}
+.reticle {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  width: 15px;
+  height: 15px;
+  margin: -7px;
+  border: 1px solid #f3d4a780;
+  transform: rotate(45deg);
+  z-index: 15;
+  pointer-events: none;
+  box-shadow: 0 0 calc(var(--charge, 0) * 24px) #ffc477;
+}
+.reticle i {
+  display: block;
+  width: 3px;
+  height: 3px;
+  background: #f1d09c;
+  margin: 5px;
+}
+.interaction {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  font:
+    11px Georgia,
+    serif;
+  background: #112d37d9;
+  border: 1px solid #e7c99555;
+  padding: 10px 15px;
+}
+.interaction kbd {
+  font: 8px var(--mono);
+  padding: 4px 6px;
+  border: 1px solid #d4bd8b77;
+  color: var(--gold);
+}
+.boss {
+  position: absolute;
+  bottom: 118px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 320px;
+  z-index: 18;
+  pointer-events: none;
+}
+.boss > div {
+  display: flex;
+  justify-content: space-between;
+  font: 7px var(--mono);
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+}
+.boss b {
+  font-size: 8px;
+  font-weight: 400;
+  color: var(--gold);
+}
+meter {
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border: 1px solid #c79c6d70;
+  background: #153037;
+}
+meter::-webkit-meter-bar {
+  background: #153037;
+  border: 0;
+  border-radius: 0;
+}
+meter::-webkit-meter-optimum-value {
+  background: #efbb72;
+  border-radius: 0;
+}
+meter::-moz-meter-bar {
+  background: #efbb72;
+}
+.boss:not(.hidden) ~ .interaction {
+  bottom: 150px;
+}
+.actionbar {
+  position: absolute;
+  bottom: 33px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 30px;
+  align-items: start;
+  z-index: 20;
+  white-space: nowrap;
+}
+.actionbar > div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.actionbar kbd {
+  font: 9px var(--mono);
+  color: #f0dfbc;
+}
+.actionbar span {
+  font: 6px var(--mono);
+  letter-spacing: 0.8px;
+  color: #b9cebf;
+}
+.charge-track {
+  height: 3px;
+  width: 140px;
+  background: #d2debf30;
+}
+.charge-track i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--gold);
+  box-shadow: 0 0 14px #e9bd7c;
+}
+.hand-panel {
+  position: absolute;
+  right: 22px;
+  bottom: 97px;
+  width: 185px;
+  background: #102d37e8;
+  border: 1px solid #acc1b448;
+  z-index: 55;
+  padding: 11px;
+  box-shadow: 0 10px 30px #0d273944;
+}
+.hand-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font: 6px var(--mono);
+  letter-spacing: 0.7px;
+  margin-bottom: 9px;
+  color: #d4ddc8;
+}
+.hand-heading b {
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 400;
+}
+.camera-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: #0c222e;
+  overflow: hidden;
+  border: 1px solid #a3c2b62b;
+}
+.camera-frame video,
+.camera-frame canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+.camera-frame video {
+  transform: scaleX(-1);
+}
+#camera-wait {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  font: 6px var(--mono);
+  letter-spacing: 1px;
+  color: #97aaa3;
+}
+.hand-labels {
+  display: flex;
+  justify-content: space-between;
+  font: 5px var(--mono);
+  margin-top: 8px;
+  color: #afcab8;
+}
+.hand-labels span:first-child {
+  color: var(--gold);
+}
+#tracking-status {
+  font: 7px/1.5 var(--mono);
+  color: #b4cabc;
+  margin: 8px 0;
+}
+.camera-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid #a7bca42b;
+  gap: 0 5px;
+  padding-top: 4px;
+}
+.camera-actions button {
+  font-size: 5px;
+  letter-spacing: 0.1px;
+  min-height: 24px;
+  text-align: left;
+  padding: 0;
+  color: #bfcbb7;
+}
+.camera-actions button:hover {
+  color: var(--gold);
+}
+.camera-actions button[aria-pressed="true"] {
+  color: var(--gold);
+}
+.toast {
+  position: absolute;
+  top: 190px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 70;
+  max-width: calc(100% - 32px);
+  padding: 12px 18px;
+  background: #153940f0;
+  border: 1px solid #e6c28a77;
+  font: 10px/1.6 var(--mono);
+  color: #f4ddba;
+  text-align: center;
+  box-shadow: 0 8px 30px #09232d44;
+  pointer-events: none;
+}
+.dialog {
+  position: absolute;
+  inset: 0;
+  background: #08232b90;
+  backdrop-filter: blur(7px);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 24px 24px;
+}
+.dialog-card {
+  width: 650px;
+  max-width: 100%;
+  max-height: 100%;
+  padding: 32px 36px;
+  background: linear-gradient(120deg, #173c43, #12313a);
+  border: 1px solid #b1c0a850;
+  border-top: 2px solid var(--gold);
+  box-shadow: 0 22px 90px #031c2877;
+  display: flex;
+  flex-direction: column;
+}
+.dialog-card > .eyebrow {
+  font-size: 7px;
+  margin: 0 0 16px;
+  flex-shrink: 0;
+}
+.dialog h2 {
+  font:
+    400 41px/1.08 Georgia,
+    serif;
+  letter-spacing: -1px;
+  margin: 0 0 20px;
+  flex-shrink: 0;
+}
+.dialog-intro {
+  font:
+    15px/1.65 Georgia,
+    serif;
+  color: #d1ddc8;
+  margin: 0 0 20px;
+}
+.dialog p {
+  line-height: 1.7;
+}
+#dialog-body {
+  min-height: 0;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #c6b18a #12313a;
+}
+.modal-note {
+  color: #9fb8ad;
+  font-size: 10px;
+  line-height: 1.75;
+  margin: 14px 0 8px;
+}
+.control-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+.control-columns h3 {
+  font: 8px var(--mono);
+  letter-spacing: 1px;
+  color: var(--gold);
+}
+.control-columns p {
+  font-size: 11px;
+  line-height: 1.8;
+  color: #b4cbbd;
+}
+.control-columns b {
+  color: #eddfbf;
+  font-weight: 400;
+}
+.keyboard-note {
+  font: 8px/1.8 var(--mono);
+  color: #b5c8b7;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.keyboard-note b {
+  font-weight: 400;
+  color: var(--gold);
+}
+#dialog-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 18px;
+  margin-top: 12px;
+  border-top: 1px solid var(--line);
+  flex-shrink: 0;
+}
+#dialog-actions .primary {
+  font-size: 8px;
+  padding: 15px 17px;
+  min-height: 45px;
+}
+#dialog-actions .secondary {
+  font-size: 7px;
+  border: 1px solid #aebca647;
+  padding: 12px 14px;
+  min-height: 44px;
+}
+.calibration-pair {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-block: 1px solid var(--line);
+  padding: 17px 0;
+  margin: 15px 0;
+  font: 8px/1.9 var(--mono);
+  letter-spacing: 1px;
+  color: #a5bcae;
+}
+.calibration-pair b {
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--gold);
+}
+.calibration-pair i {
+  font-style: normal;
+  font-size: 24px;
+  color: #f0cc97;
+}
+.hand-pointer {
+  position: fixed;
+  z-index: 80;
+  width: 32px;
+  height: 32px;
+  margin: -16px;
+  pointer-events: none;
+  border-radius: 50%;
+  background: conic-gradient(var(--gold) var(--progress, 0deg), #f5dfb622 0);
+  border: 1px solid #eac48d;
+  box-shadow: 0 0 0 4px #102e3580;
+}
+.hand-pointer:after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  background: #12343b80;
+}
+.touch {
+  display: none;
+  position: absolute;
+  bottom: 22px;
+  left: 18px;
+  right: 18px;
+  justify-content: space-between;
+  align-items: end;
+  z-index: 30;
+  pointer-events: none;
+}
+.touch button {
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  background: #173944aa;
+  border: 1px solid #d3dfc85a;
+  color: #ebdebf;
+  min-height: 43px;
+  min-width: 43px;
+  font-size: 8px;
+  letter-spacing: 0;
+}
+.touch button:active {
+  background: #efc184cc;
+  color: #18383b;
+}
+.touch-dpad {
+  display: grid;
+  grid-template-columns: repeat(3, 43px);
+  grid-template-rows: repeat(2, 43px);
+  gap: 4px;
+}
+.touch-dpad button:first-child {
+  grid-column: 2;
+}
+.touch-dpad button:nth-child(2) {
+  grid-column: 1;
+}
+.touch-abilities {
+  display: grid;
+  grid-template-columns: repeat(2, 54px);
+  gap: 5px;
+}
+.gpu-error {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  background: #102d37;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 30px;
+  text-align: center;
+}
+.gpu-error h2 {
+  font:
+    34px Georgia,
+    serif;
+}
+.gpu-error p {
+  max-width: 500px;
+  line-height: 1.8;
+  color: #b5c5b7;
+}
+.gpu-error button {
+  margin-top: 15px;
+}
+@media (min-width: 1600px) {
+  .title-copy {
+    left: 8%;
+    top: 48%;
+  }
+  .story {
+    font-size: 14px;
+    max-width: 360px;
+  }
+  .lead {
+    font-size: 28px;
+  }
+  .start-actions {
+    margin-top: 30px;
+  }
+  .world-caption {
+    right: 6%;
+  }
+}
+@media (max-height: 730px) and (min-width: 901px) {
+  .topbar {
+    padding-block: 15px;
+  }
+  .title-copy {
+    top: 50%;
+    width: 50%;
+  }
+  h1 {
+    font-size: 80px;
+    margin: 16px 0 22px;
+  }
+  .eyebrow {
+    font-size: 7px;
+  }
+  .lead {
+    font-size: 21px;
+    margin-bottom: 12px;
+  }
+  .story {
+    font-size: 11px;
+    max-width: 340px;
+    margin-bottom: 16px;
+  }
+  .privacy {
+    margin-top: 9px;
+  }
+  .primary {
+    min-height: 47px;
+    padding-block: 13px;
+  }
+  .world-caption {
+    bottom: 18%;
+  }
+  .title-footer {
+    bottom: 24px;
+  }
+  .hud {
+    top: 97px;
+  }
+}
+@media (max-width: 1000px) {
+  .topbar {
+    padding: 18px 24px;
+  }
+  .topbar nav {
+    gap: 15px;
+  }
+  .title-copy {
+    left: 5%;
+    width: 55%;
+    max-width: 540px;
+  }
+  h1 {
+    font-size: clamp(68px, 8.3vw, 100px);
+  }
+  .world-caption {
+    right: 4%;
+    bottom: 17%;
+    max-width: 220px;
+  }
+  .world-caption b {
+    font-size: 23px;
+  }
+  .title-footer {
+    left: 5%;
+    font-size: 6px;
+  }
+  .actionbar {
+    gap: 18px;
+    bottom: 35px;
+  }
+  .hand-panel {
+    right: 12px;
+    width: 165px;
+  }
+  .hud {
+    left: 24px;
+    right: 24px;
+    top: 100px;
+  }
+  .mission p {
+    font-size: 17px;
+  }
+}
+@media (pointer: coarse), (max-width: 900px) {
+  .touch {
+    display: flex;
+  }
+  .actionbar {
+    display: none;
+  }
+  .interaction {
+    bottom: 125px;
+  }
+  .boss {
+    bottom: 132px;
+    width: 230px;
+  }
+  .quality {
+    bottom: 3px;
+    font-size: 6px;
+  }
+  .hand-panel {
+    bottom: 125px;
+    width: 150px;
+  }
+  .hand-panel .camera-actions button {
+    font-size: 5px;
+  }
+}
+@media (max-width: 700px) {
+  .topbar {
+    padding: 14px 18px;
+  }
+  .brand {
+    gap: 7px;
+    font-size: 9px;
+    letter-spacing: 1.3px;
+  }
+  .brand svg {
+    width: 30px;
+    height: 30px;
+  }
+  .brand span span {
+    font-size: 7px;
+    letter-spacing: 2px;
+  }
+  .topbar nav {
+    gap: 10px;
+  }
+  .quiet {
+    font-size: 7px;
+    letter-spacing: 0.4px;
+  }
+  .icon-button {
+    font-size: 7px;
+    min-width: 25px;
+  }
+  .icon-button span {
+    font-size: 6px;
+    margin-left: 2px;
+  }
+  #fullscreen {
+    font-size: 22px;
+  }
+  .title-copy {
+    left: 7%;
+    top: 45%;
+    width: 86%;
+    max-width: 500px;
+  }
+  .title-copy .eyebrow {
+    font-size: 6px;
+    letter-spacing: 1.6px;
+  }
+  h1 {
+    font-size: clamp(65px, 13vw, 90px);
+    letter-spacing: -3.5px;
+    margin: 24px 0;
+  }
+  .lead {
+    font-size: 22px;
+  }
+  .story {
+    font-size: 11px;
+    max-width: 270px;
+    margin-bottom: 22px;
+  }
+  .primary {
+    font-size: 8px;
+    padding: 15px 19px;
+    min-height: 51px;
+  }
+  .primary span {
+    font-size: 17px;
+    margin-left: 20px;
+  }
+  .text-button {
+    font-size: 7px;
+  }
+  .privacy {
+    font-size: 7px;
+  }
+  .world-caption {
+    display: none;
+  }
+  .title-footer {
+    left: 7%;
+    right: 7%;
+    bottom: 28px;
+    font-size: 6px;
+    letter-spacing: 0.5px;
+  }
+  .title-footer span:last-child {
+    display: none;
+  }
+  .vignette {
+    background:
+      linear-gradient(90deg, #09232de8, #09232d99 40%, #09232d22),
+      linear-gradient(0deg, #102832a8, transparent 40%);
+  }
+  .hud {
+    top: 89px;
+    left: 18px;
+    right: 18px;
+    grid-template-columns: 60px 1fr 48px;
+    gap: 6px;
+  }
+  .micro {
+    font-size: 5px;
+    letter-spacing: 0.7px;
+  }
+  .vital > div {
+    gap: 4px;
+    margin-top: 10px;
+  }
+  .vital i {
+    width: 7px;
+    height: 7px;
+  }
+  .mission p {
+    font-size: 14px;
+    margin: 8px 0 5px;
+  }
+  .mission > span:last-child {
+    font-size: 5px;
+    letter-spacing: 0.8px;
+  }
+  .hud kbd {
+    display: none;
+  }
+  .hud button {
+    font-size: 6px;
+  }
+  .hand-panel {
+    width: 124px;
+    right: 12px;
+    bottom: auto;
+    top: 158px;
+    padding: 7px;
+  }
+  .hand-heading {
+    font-size: 5px;
+    letter-spacing: 0;
+  }
+  .hand-heading b {
+    font-size: 8px;
+  }
+  .hand-labels,
+  #tracking-status {
+    display: none;
+  }
+  .camera-actions {
+    margin-top: 6px;
+    gap: 3px;
+  }
+  .camera-actions button {
+    font-size: 4px;
+    min-height: 22px;
+  }
+  .toast {
+    font-size: 8px;
+    top: 127px;
+    width: max-content;
+    max-width: calc(100% - 24px);
+    padding: 10px 12px;
+  }
+  .dialog {
+    padding: 85px 12px 16px;
+  }
+  .dialog-card {
+    padding: 24px 22px;
+  }
+  .dialog h2 {
+    font-size: 31px;
+    margin-bottom: 16px;
+  }
+  .dialog-intro {
+    font-size: 13px;
+  }
+  .dialog-card > .eyebrow {
+    font-size: 6px;
+    letter-spacing: 1px;
+  }
+  .control-columns {
+    gap: 14px;
+    grid-template-columns: 1fr;
+  }
+  .control-columns p {
+    font-size: 10px;
+  }
+  .control-columns h3 {
+    font-size: 7px;
+  }
+  .modal-note {
+    font-size: 9px;
+  }
+  .keyboard-note {
+    font-size: 7px;
+  }
+  #dialog-actions {
+    gap: 7px;
+    padding-top: 12px;
+    margin-top: 6px;
+  }
+  #dialog-actions .primary {
+    font-size: 7px;
+    min-height: 43px;
+    padding: 12px 14px;
+  }
+  #dialog-actions .secondary {
+    font-size: 6px;
+    min-height: 40px;
+    padding: 10px;
+  }
+  .calibration-pair {
+    font-size: 7px;
+    padding-block: 13px;
+  }
+  .calibration-pair b {
+    font-size: 7px;
+  }
+  .calibration-pair i {
+    font-size: 19px;
+  }
+  #experience:has(.hand-panel:not(.hidden)) .dialog {
+    padding-top: 344px;
+  }
+  #experience:has(.hand-panel:not(.hidden)) .hand-panel {
+    top: 89px;
+    width: 134px;
+  }
+  .interaction {
+    font-size: 10px;
+    bottom: 132px;
+    padding: 8px 12px;
+  }
+  .reticle {
+    top: 58%;
+  }
+  .boss {
+    bottom: 130px;
+    width: 190px;
+  }
+  .touch {
+    left: 12px;
+    right: 12px;
+    bottom: 21px;
+  }
+}
+@media (max-height: 700px) and (max-width: 700px) and (orientation: portrait) {
+  .title-copy {
+    top: 47%;
+  }
+  h1 {
+    font-size: 63px;
+    margin: 18px 0;
+  }
+  .lead {
+    font-size: 19px;
+  }
+  .story {
+    font-size: 10px;
+    margin-bottom: 16px;
+  }
+  .title-copy .eyebrow {
+    font-size: 5px;
+  }
+  .title-footer {
+    bottom: 19px;
+  }
+  .privacy {
+    font-size: 6px;
+  }
+}
+@media (max-height: 520px) and (orientation: landscape) {
+  .topbar {
+    padding: 6px 16px;
+    border: 0;
+  }
+  .brand {
+    font-size: 8px;
+    gap: 7px;
+  }
+  .brand svg {
+    width: 27px;
+    height: 27px;
+  }
+  .brand span span {
+    font-size: 6px;
+  }
+  .topbar nav {
+    gap: 14px;
+  }
+  .quiet {
+    font-size: 7px;
+  }
+  .icon-button {
+    font-size: 7px;
+    min-height: 30px;
+  }
+  .title-copy {
+    top: 51%;
+    left: 5%;
+    width: 55%;
+    max-width: 470px;
+  }
+  .title-copy .eyebrow {
+    font-size: 5px;
+    letter-spacing: 1px;
+  }
+  h1 {
+    font-size: 57px;
+    letter-spacing: -3px;
+    margin: 13px 0;
+  }
+  .lead {
+    font-size: 17px;
+    margin-bottom: 9px;
+  }
+  .story {
+    display: none;
+  }
+  .start-actions {
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+  }
+  .primary {
+    font-size: 6px;
+    min-height: 39px;
+    padding: 10px 13px;
+  }
+  .primary span {
+    font-size: 13px;
+    margin-left: 9px;
+  }
+  .text-button {
+    font-size: 5px;
+    min-height: 32px;
+  }
+  .privacy {
+    font-size: 6px;
+    margin-top: 10px;
+  }
+  .world-caption {
+    display: block;
+    bottom: 21%;
+    max-width: 180px;
+  }
+  .world-caption > span {
+    font-size: 5px;
+  }
+  .world-caption b {
+    font-size: 21px;
+  }
+  .world-caption small {
+    font-size: 5px;
+  }
+  .title-footer {
+    font-size: 5px;
+    bottom: 18px;
+  }
+  .hud {
+    top: 53px;
+    left: 18px;
+    right: 18px;
+    grid-template-columns: 1fr 2fr 1fr;
+  }
+  .micro {
+    font-size: 5px;
+  }
+  .mission p {
+    font-size: 13px;
+    margin: 5px 0;
+  }
+  .mission > span:last-child {
+    font-size: 5px;
+  }
+  .vital i {
+    width: 8px;
+    height: 8px;
+  }
+  .hud kbd {
+    display: none;
+  }
+  .hud button {
+    font-size: 6px;
+  }
+  .touch {
+    bottom: 12px;
+  }
+  .touch-dpad {
+    grid-template-columns: repeat(3, 36px);
+    grid-template-rows: repeat(2, 34px);
+    gap: 3px;
+  }
+  .touch button {
+    min-height: 34px;
+    min-width: 36px;
+    font-size: 6px;
+  }
+  .touch-abilities {
+    grid-template-columns: repeat(2, 48px);
+    gap: 4px;
+  }
+  .hand-panel,
+  #experience:has(.hand-panel:not(.hidden)) .hand-panel {
+    top: 100px;
+    bottom: auto;
+    right: 12px;
+    width: 110px;
+    padding: 5px;
+  }
+  .hand-heading {
+    font-size: 4px;
+    letter-spacing: 0;
+    margin-bottom: 5px;
+  }
+  .hand-heading b {
+    font-size: 7px;
+  }
+  .hand-labels,
+  #tracking-status {
+    display: none;
+  }
+  .camera-actions button:not(#camera-off) {
+    display: none;
+  }
+  .camera-actions {
+    display: block;
+    margin-top: 3px;
+    padding: 0;
+  }
+  .camera-actions #camera-off {
+    min-height: 20px;
+    font-size: 4px;
+  }
+  .interaction {
+    bottom: 95px;
+    font-size: 9px;
+    padding: 5px 10px;
+  }
+  .interaction kbd {
+    font-size: 6px;
+  }
+  .boss {
+    bottom: 85px;
+    width: 220px;
+  }
+  .boss > div {
+    font-size: 5px;
+  }
+  .dialog,
+  #experience:has(.hand-panel:not(.hidden)) .dialog {
+    padding: 48px 140px 12px 24px;
+  }
+  .dialog-card {
+    padding: 17px 22px;
+    max-width: 560px;
+  }
+  .dialog h2 {
+    font-size: 27px;
+    margin-bottom: 9px;
+  }
+  .dialog-card > .eyebrow {
+    font-size: 5px;
+    margin-bottom: 9px;
+  }
+  .dialog-intro {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+  .modal-note {
+    font-size: 8px;
+    line-height: 1.5;
+  }
+  .control-columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .control-columns p {
+    font-size: 9px;
+  }
+  #dialog-actions {
+    padding-top: 9px;
+    margin-top: 5px;
+    gap: 6px;
+  }
+  #dialog-actions .primary {
+    font-size: 6px;
+    padding: 10px 12px;
+    min-height: 34px;
+  }
+  #dialog-actions .secondary {
+    font-size: 5px;
+    padding: 8px;
+    min-height: 34px;
+  }
+  .calibration-pair {
+    padding-block: 8px;
+    font-size: 6px;
+    margin: 9px 0;
+  }
+  .calibration-pair b {
+    font-size: 6px;
+  }
+  .toast {
+    top: 98px;
+    font-size: 7px;
+    padding: 7px 10px;
+  }
+  .quality {
+    font-size: 5px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *:before,
+  *:after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+@media (max-width: 700px) and (orientation: portrait) {
+  .camera-actions button {
+    min-height: 32px;
+    font-size: 5px;
+  }
+}
+.topbar {
+  background: linear-gradient(180deg, #08232bd9, #08232b26);
+}
