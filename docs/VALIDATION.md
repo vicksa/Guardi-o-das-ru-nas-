@@ -20,3 +20,9 @@ História verificada: abrir o jogo → entrar por teclado/toque ou autorizar a c
 - Capturas de abertura, fase, enigma, vitória, derrota, pausa e câmera revisadas. Um gradiente discreto foi acrescentado ao cabeçalho para manter seus controles legíveis sobre a lua clara; não altera gameplay.
 
 O fluxo é inteiramente cliente → modelos locais/regras → renderização Three.js. Nenhuma imagem é enviada à API. A imagem de teste não valida movimentos de mãos reais nem limitações de webcams físicas.
+
+## Site público
+
+A publicação inicial em https://guardiao-das-ruinas.vercel.app/ foi exercitada em navegador sem autenticação. A missão inteira foi vencida com entradas normais: pegar o bloco com E, encaixar no pedestal, atravessar com avanço/pulo, carregar e soltar magias e usar escudo. Não houve acesso a estado interno, teletransporte ou alteração de HP/dano. A inspeção de desenvolvimento não está exposta no build público.
+
+Uma segunda sessão carregou uma fotografia de duas mãos por câmera sintética e executou os modelos reais em modo compatível. Verificou `2/2`, entrada na missão e encerramento de todas as tracks ao desligar a câmera. Nenhum erro JavaScript nem requisição para outra origem foi observado nessa sessão. Isso continua sendo validação com imagem de teste, não uma webcam física.

@@ -1,5 +1,7 @@
 # Guardião das Ruínas
 
+**[Jogar no navegador](https://guardiao-das-ruinas.vercel.app/)** · [Repositório](https://github.com/vicksa/Guardi-o-das-ru-nas-)
+
 Uma aventura 3D para navegador controlada pelas mãos, com teclado e toque como alternativas. Explore três ilhas flutuantes, erga o bloco luminoso com telecinese, desperte a passagem e enfrente um guardião de pedra com ataques sinalizados no chão.
 
 ![O santuário suspenso em 3D](docs/previews/title.png)
