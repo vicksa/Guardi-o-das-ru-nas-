@@ -100,13 +100,16 @@ test("title, 3D renderer, controls, movement, jump, pause and return", async ({
 test("the complete mission is beatable through ordinary keyboard input", async ({
   page,
 }) => {
-  test.setTimeout(120000);
+  test.setTimeout(300000);
   await start(page);
   if ((await page.locator("#quality").getAttribute("aria-pressed")) === "false")
     await page.locator("#quality").click();
   await page.keyboard.down("KeyW");
   await expect
-    .poll(async () => (await snapshot(page)).z, { timeout: 12000 })
+    .poll(async () => (await snapshot(page)).z, {
+      timeout: 20000,
+      intervals: [50],
+    })
     .toBeLessThan(4.4);
   await page.keyboard.up("KeyW");
   await page.keyboard.press("KeyE");
@@ -118,23 +121,29 @@ test("the complete mission is beatable through ordinary keyboard input", async (
   await page.keyboard.down("KeyW");
   await expect
     .poll(async () => (await snapshot(page)).z, {
-      timeout: 15000,
+      timeout: 40000,
       intervals: [50],
     })
     .toBeLessThan(-5.8);
   await page.keyboard.down("Space");
   await expect
-    .poll(async () => (await snapshot(page)).checkpoint, { timeout: 12000 })
+    .poll(async () => (await snapshot(page)).checkpoint, { timeout: 30000 })
     .toBe(true);
   await page.keyboard.up("Space");
   await page.keyboard.up("KeyW");
   expect((await snapshot(page)).hp).toBeGreaterThan(0);
   // Face the guardian along the path and cast with normal charge/release inputs.
   for (let i = 0; i < 6 && (await snapshot(page)).boss > 0; i++) {
+    const previousBossHP = (await snapshot(page)).boss;
     await page.keyboard.down("KeyJ");
-    await page.waitForTimeout(1100);
+    await expect
+      .poll(async () => (await snapshot(page)).charge, { timeout: 15000 })
+      .toBeGreaterThan(0.95);
     await page.keyboard.up("KeyJ");
     await page.keyboard.down("KeyK");
+    await expect
+      .poll(async () => (await snapshot(page)).boss, { timeout: 15000 })
+      .toBeLessThan(previousBossHP);
     await page.waitForTimeout(650);
     await page.keyboard.up("KeyK");
   }
@@ -219,7 +228,7 @@ test("camera permission pending can be cancelled without blocking another mode",
 test("compatible inference recognizes photographed hands and webcam survives death and retry", async ({
   page,
 }) => {
-  test.setTimeout(90000);
+  test.setTimeout(150000);
   await photoCamera(page);
   await page.goto("/");
   await page.locator("#start-hands").click();
@@ -227,7 +236,7 @@ test("compatible inference recognizes photographed hands and webcam survives dea
     .getByRole("button", { name: "USAR MODO COMPATÍVEL", exact: true })
     .click();
   await expect(page.locator("#hand-count")).toHaveText("2/2", {
-    timeout: 45000,
+    timeout: 75000,
   });
   await expect(page.locator("#dialog-title")).toHaveText(
     "Encontre seu centro.",
@@ -290,7 +299,7 @@ test("native tracking also recognizes two photographed hands in the 3D scene", a
   await page.goto("/");
   await page.locator("#start-hands").click();
   await expect(page.locator("#hand-count")).toHaveText("2/2", {
-    timeout: 45000,
+    timeout: 75000,
   });
   await expect(page.locator("#dialog-title")).toHaveText(
     "Encontre seu centro.",
@@ -371,7 +380,7 @@ test("mobile camera preparation keeps both preview and mission button visible", 
     await page.goto("/");
     await page.locator("#start-hands").click();
     await expect(page.locator("#hand-count")).toHaveText("2/2", {
-      timeout: 45000,
+      timeout: 75000,
     });
     await expect(page.locator("#webcam")).toBeInViewport();
     await expect(

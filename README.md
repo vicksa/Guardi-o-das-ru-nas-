@@ -13,7 +13,7 @@ npm ci
 npm run dev
 ```
 
-Abra o endereço exibido pelo Vite. A webcam exige HTTPS ou localhost. Sem câmera, escolha Explorar com teclado; no celular, Jogar com toque. O mundo 3D precisa de WebGL 2. O modo leve reduz resolução e desliga sombras; ele também é ativado automaticamente se a taxa de quadros inicial estiver baixa.
+Abra o endereço exibido pelo Vite. A webcam exige HTTPS ou localhost. Sem câmera, escolha Explorar com teclado; no celular, Jogar com toque. O mundo 3D precisa de WebGL 2. O modo leve reduz resolução e desliga sombras; ele também é ativado automaticamente em renderizadores por software ou se a taxa de quadros inicial estiver baixa.
 
 ## Controles
 
@@ -46,10 +46,14 @@ Os testes incluem a missão completa por entradas normais, controles simultâneo
 
 ## Implementação
 
-TypeScript, Vite e Three.js. Regras independentes da renderização em `src/simulation.ts`; gestos em `src/controls.ts`; captura e recuperação em `src/tracking.ts`; arte procedural e animação em `src/world.ts`; interface em `src/main.ts`. A física usa passo fixo de 1/60 s, com limite de recuperação por quadro. A inspeção de estado dos testes existe somente em desenvolvimento e é removida do build de produção.
+TypeScript, Vite e Three.js. Regras independentes da renderização em `src/simulation.ts`; gestos em `src/controls.ts`; captura e recuperação em `src/tracking.ts`; arte procedural e animação em `src/world.ts` e `src/art/`; interface em `src/main.ts`. A física usa passo fixo de 1/60 s, com limite de recuperação por quadro. A inspeção de estado dos testes existe somente em desenvolvimento e é removida do build de produção.
 
 A captura reutiliza a base de recuperação desenvolvida no Game-air, com fallback MediaPipe GPU → CPU → TensorFlow.js/WASM. O modo compatível não depende de WebGL para reconhecimento, mas o cenário 3D continua exigindo WebGL 2. Modelos e runtimes são servidos pelo próprio site. Nenhuma imagem de câmera é enviada a um servidor.
 
 ## Publicação
 
-Site estático na Vercel; configuração em `vercel.json`. GitHub Actions executa unidade, build e testes de navegador. Sem banco de dados, contas ou segredos no cliente. Sons sintetizados opcionais, inicialmente desligados. Arte original criada em geometria procedural; fontes, motores e modelos conservam suas próprias licenças, descritas em [docs/ASSETS.md](docs/ASSETS.md).
+Site estático na Vercel; configuração em `vercel.json`. GitHub Actions executa unidade, build e testes de navegador. Sem banco de dados, contas ou segredos no cliente. Sons sintetizados opcionais, inicialmente desligados. Mago KayKit CC0 com esqueleto e animações, arquitetura/guardião procedurais e materiais PBR; fontes, motores e modelos conservam suas próprias licenças, descritas em [docs/ASSETS.md](docs/ASSETS.md).
+
+## Skills de 3D
+
+Dez skills do pacote [CloudAI-X/threejs-skills](https://github.com/CloudAI-X/threejs-skills) estão instaladas em `.agents/skills/`, com licença MIT e commit de origem registrados em [docs/3D-SKILLS.md](docs/3D-SKILLS.md). Incluem materiais, iluminação, geometria, texturas, animação, carregamento de modelos, otimização e pós-processamento. O mago possui 12 clips esqueléticos e transições de animação; o modo leve preserva os modelos e os materiais e desliga sombras/bloom para reduzir o custo gráfico.

@@ -221,3 +221,30 @@ it("accepts a slightly late jump after the bridge edge without allowing air jump
   advance(s, 0.2);
   expect(s.player.vy).toBeLessThan(takeoff);
 });
+
+it("ships a compact rigged mage with the actual animation clips and attachment slots", async () => {
+  const { readFileSync } = await import("node:fs");
+  const data = readFileSync(
+    new URL("../public/art/mage/mage.glb", import.meta.url),
+  );
+  expect(data.readUInt32LE(0)).toBe(0x46546c67);
+  expect(data.length).toBeLessThan(1_000_000);
+  const length = data.readUInt32LE(12);
+  const asset = JSON.parse(data.subarray(20, 20 + length).toString());
+  expect(asset.skins[0].joints.length).toBeGreaterThan(25);
+  const clips = asset.animations.map((clip: { name: string }) => clip.name);
+  for (const name of [
+    "Idle",
+    "Running_A",
+    "Walking_Backwards",
+    "Jump_Idle",
+    "Spellcasting",
+    "Spellcast_Shoot",
+    "Blocking",
+    "Death_A",
+  ])
+    expect(clips).toContain(name);
+  expect(
+    asset.nodes.some((node: { name: string }) => node.name === "handslot.r"),
+  ).toBe(true);
+});

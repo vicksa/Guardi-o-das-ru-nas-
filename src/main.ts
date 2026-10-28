@@ -58,6 +58,29 @@ let dialogContext = "";
 export const sim = new Simulation(onGameEvent);
 try {
   world = new World($("world"), sim);
+  $("quality").setAttribute("aria-pressed", String(world.lowQuality));
+  $("start-hands").setAttribute("disabled", "");
+  const assetStatus = document.createElement("p");
+  assetStatus.id = "asset-status";
+  assetStatus.className = "privacy";
+  assetStatus.setAttribute("role", "status");
+  assetStatus.textContent = "Preparando os personagens…";
+  document.querySelector(".start-actions")!.append(assetStatus);
+  $("start-keys").setAttribute("disabled", "");
+  world.ready
+    .then(() => {
+      document.getElementById("asset-status")?.remove();
+      $("start-hands").removeAttribute("disabled");
+      $("start-keys").removeAttribute("disabled");
+    })
+    .catch((error) => {
+      console.error("Character asset failed", error);
+      $("gpu-error").classList.remove("hidden");
+      $("gpu-error").querySelector("h2")!.textContent =
+        "O santuário não terminou de carregar.";
+      $("gpu-error").querySelector("p")!.textContent =
+        "Confira a conexão e tente novamente para carregar os personagens.";
+    });
 } catch (error) {
   console.error("3D initialization failed", error);
   $("gpu-error").classList.remove("hidden");
@@ -632,18 +655,20 @@ function frame(now: number) {
   )
     waitForHands();
   if (sim.status === "playing") {
-    if (mode === "hands") {
-      sim.command = { ...handCommand };
-      handCommand.grab = handCommand.cast = false;
-    } else sim.command = physicalCommand();
     accumulator = Math.min(0.2, accumulator + dt);
-    while (accumulator >= 1 / 60) {
-      sim.update(1 / 60);
-      accumulator -= 1 / 60;
+    // Consume one-shot actions only when physics can process them.
+    if (accumulator >= 1 / 60) {
+      if (mode === "hands") {
+        sim.command = { ...handCommand };
+        handCommand.grab = handCommand.cast = false;
+      } else sim.command = physicalCommand();
+      while (accumulator >= 1 / 60) {
+        sim.update(1 / 60);
+        accumulator -= 1 / 60;
+      }
     }
   } else accumulator = 0;
-  world?.frame(dt);
-  renderedFrames++;
+  if (world?.frame(dt)) renderedFrames++;
   if (!adaptiveDone && now - performanceStart > 3000) {
     adaptiveDone = true;
     if (renderedFrames / ((now - performanceStart) / 1000) < 22) {
